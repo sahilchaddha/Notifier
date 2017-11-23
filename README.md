@@ -31,4 +31,6 @@ $ NotifyMe arg1
 // or
 
 $ git clone repo && NotifyMe "Git Clone Done"
+$ zip docs.zip -f -r /home/documents && NotifyMe "Files Ziped"
+$ ./backupEC2.sh && NotifyMe "Mongo Backup Complete"
 ```
