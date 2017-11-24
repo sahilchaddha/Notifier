@@ -14,7 +14,7 @@ Note : Change your Slack Hooks URL in Environment.swift , and rebuild Swift file
 
 ## Build : 
 ```sh
-//Change to your Slack Hook Point in Notifier.swift before building
+//Change to your Slack Hook Point in Environment.swift before building
 $ swiftc main.swift Notifier.swift Environment.swift -o NotifyMe
 ```
 
