@@ -8,5 +8,6 @@
 
 import Foundation
 
-Notifier().notify()
+let notifier: NotifierType = Notifier()
+notifier.notify()
 

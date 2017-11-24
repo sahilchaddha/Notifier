@@ -9,7 +9,11 @@
 import Foundation
 import Dispatch
 
-class Notifier {
+protocol NotifierType {
+    func notify()
+}
+
+class Notifier: NotifierType {
     let semaphore: DispatchSemaphore
     
     init() {
@@ -23,17 +27,20 @@ class Notifier {
         if argC > 1 {
             message = CommandLine.arguments[1]
         }
-        
+    
+        sendNotification(message: message)
+    }
+    
+    private func sendNotification(message: String) {
         let parameters: [String: String] = ["text": message]
         let headers: [String: String] = ["Content-Type": "application/json"]
-        let slackURL: URL? = URL(string: "") //Your Slack Hook e.g. https://hooks.slack.com/services/abcd
         
-        guard let baseURL = slackURL else {
-            print("Invalid Slack URL")
+        guard let slackHooksURL: URL = URL(string: Environment().slackHooksURL) else {
+            fputs("Error: \(NotifierError.InvalidSlackURL)\n", stderr)
             return
         }
         
-        var req: URLRequest = URLRequest(url: baseURL)
+        var req: URLRequest = URLRequest(url: slackHooksURL)
         req.httpBody = try? JSONEncoder().encode(parameters)
         req.httpMethod = "post"
         req.allHTTPHeaderFields = headers
@@ -44,5 +51,11 @@ class Notifier {
         dataTask.resume()
         
         semaphore.wait()
+    }
+}
+
+extension Notifier {
+    enum NotifierError: Error {
+        case InvalidSlackURL
     }
 }
